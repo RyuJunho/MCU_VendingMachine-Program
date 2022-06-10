@@ -1,1 +1,1 @@
-# MCU_VendingMachine-Program
+# 2022년 MCU응용 자판기 프로그램
