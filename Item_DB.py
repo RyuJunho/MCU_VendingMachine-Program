@@ -1,5 +1,7 @@
 import pandas as pd
 
+
+#엔티티 클래스
 class Item_DB():
     def __init__(self):
         self.index_key = None

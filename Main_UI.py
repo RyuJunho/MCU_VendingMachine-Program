@@ -2,11 +2,13 @@
 # Client
 
 from Inventory_left_UI import *
+from Sale_UI import*
 import tkinter as tk
 from tkinter import ttk
 from PIL import ImageTk, Image
 
 
+# 바운더리 클래스
 class Main():
     def __init__(self):
         self.window = tk.Tk()
@@ -38,7 +40,8 @@ class Main():
         self.Inventory_btn['compound'] = 'center'  # 그림위에 글씨 출력
 
         # 거래내역확인 버튼
-        self.Transaction_btn = tk.Button(self.window, text='거래내역', font=("맑은고딕", 12, 'bold'))
+        self.Transaction_btn = tk.Button(self.window, text='거래내역', font=("맑은고딕", 12, 'bold'),
+                                         command= lambda : self.Sale())
         self.Transaction_btn.pack(ipadx=30, ipady=10, pady=30)
         self.Transaction_btn.configure(image=btn_img, width=30, height=10)
         self.Transaction_btn.image = btn_img
@@ -53,8 +56,12 @@ class Main():
         self.Exit_btn['compound'] = 'center'  # 그림위에 글씨 출력
 
     def Inventory(self):
-        Inventory = Inventory_left_UI()
+        Inventory = Inventory_left_UI() #재고관리 UI 객체 생성
         Inventory.mainloop()
+
+    def Sale(selfs):
+        Sale = Sale_UI()  #거래내역 UI 객체 생성
+        Sale.mainloop()
 
     def exit(self):
         self.quit()
