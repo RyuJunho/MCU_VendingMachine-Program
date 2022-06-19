@@ -1,6 +1,5 @@
 # MCU_Vending_Machine
 # Client
-import socket
 import pandas as pd
 
 from Sale_System import *
@@ -8,17 +7,7 @@ from Sale_System import *
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font
-
-from datetime import datetime, timedelta
-
-'''
-#서버에 연걸
-server_ip = 'localhost' #서버 ip
-server_port = 9090      #포트번호
-
-socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  #소켓 객체 생성
-socket.connect((server_ip, server_port))    #연결
-'''
+import socket
 
 
 # 거래내역 확인
@@ -27,6 +16,7 @@ class Sale_UI(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self.action = Sale_System()
+
 
         self.title('거래내역 UI')
         self.geometry('600x500')
@@ -37,16 +27,10 @@ class Sale_UI(tk.Tk):
         self.label = tk.Label(self, text='\u2665 거래내역 \u2665', font=font)
         self.label.pack(pady=10)
 
-        # 새로고침 버튼
-        font = tkinter.font.Font(family='궁서', size=20, underline=True, slant='italic')
-        self.repaint_btn = tk.Button(self, text='새로고침', font=font
-                                     , command=lambda: self.action.repaint(self.Sale_Table))
-        self.repaint_btn.pack(pady=30)
-
         #추가 버튼
         font = tkinter.font.Font(family='궁서', size=20, underline=True, slant='italic')
         self.repaint_btn = tk.Button(self, text='추가', font=font
-                                     , command=lambda: self.action.sale_append(self.Sale_Table))
+                                     , command=lambda: self.action.sale_repaint(self.Sale_Table,'사과'))
         self.repaint_btn.pack(pady=30)
 
 
@@ -72,6 +56,12 @@ class Sale_UI(tk.Tk):
         self.Sale_Table.heading("two", text="제품명", anchor="center")
 
         transaction_frame.pack(padx=50)  # 검색 결과 테이블 프레임 부착
+
+        #닫기 버튼
+        font = tkinter.font.Font(family='궁서', size=20, underline=True, slant='italic')
+        self.repaint_btn = tk.Button(self, text='닫기', font=font
+                                     , command=lambda: self.socket_close())
+        self.repaint_btn.pack(pady=30)
 
 
 

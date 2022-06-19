@@ -1,20 +1,11 @@
 #MCU_Vending_Machine
 #Client
-import socket
 import pandas as pd
 from tkinter import*
 
 from Sale_DB import *
 from datetime import datetime, timedelta
 
-'''
-#서버에 연걸
-server_ip = 'localhost' #서버 ip
-server_port = 9090      #포트번호
-
-socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  #소켓 객체 생성
-socket.connect((server_ip, server_port))    #연결
-'''
 
 #거래내역 확인
 #컨트롤 클래스
@@ -24,8 +15,10 @@ class Sale_System():
         self.Sale_df = self.SaleDB.get_df()
 
 
-    def sale_append(self,treeview):
-        item_name = '사과'
+    def repaint(self,word):
+        self.SaleDB = Sale_DB()  # Item_DB객체 생성
+        self.Sale_df = self.SaleDB.get_df()
+        item_name = word
         Sale_date = (datetime.today()).strftime("%Y-%m-%d")  # 대여일
 
         #추가할 데이터프레임
@@ -35,7 +28,15 @@ class Sale_System():
         self.Sale_df = pd.concat([self.Sale_df,Sale_df],ignore_index=True)
 
         #파일 저장
-        self.Sale_df.to_csv("csv/Sale.csv",index=False)
+        self.Sale_df.to_csv("csv/Sale.csv",index=False,encoding='cp949')
+
+
+    #새로고침
+    def sale_repaint(self,treeview,word):
+        self.SaleDB = Sale_DB()  # Item_DB객체 생성
+        self.Sale_df = self.SaleDB.get_df()
+
+        self.repaint(word)
 
         #테이블 설정
         # 기존 값 제거

@@ -6,15 +6,6 @@ from Inventory_right_UI import *
 from Inventory_System import *
 import tkinter.font
 
-'''
-#서버에 연걸
-server_ip = 'localhost' #서버 ip
-server_port = 9090      #포트번호
-
-socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  #소켓 객체 생성
-socket.connect((server_ip, server_port))    #연결
-'''
-
 
 # 물품수량 확인
 # 바운더리 클래스

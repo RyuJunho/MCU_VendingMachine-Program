@@ -51,3 +51,4 @@ class Inventory_right_UI(tk.Frame):
     def modify(self, focus_item, treeview):
         self.action.frame_modify(focus_item, treeview, self.name_label, self.count_entry)
         self.parent.pack(side='right', expand=True)
+

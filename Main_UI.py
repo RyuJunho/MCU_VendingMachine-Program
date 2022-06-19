@@ -1,6 +1,7 @@
 # MCU_Vending_Machine
 # Client
 
+
 from Inventory_left_UI import *
 from Sale_UI import*
 import tkinter as tk
@@ -11,6 +12,18 @@ from PIL import ImageTk, Image
 # 바운더리 클래스
 class Main():
     def __init__(self):
+        self.action = Sale_System()
+
+        '''
+        #서버에 연걸
+        server_ip = 'localhost' #서버 ip
+        server_port = 9090      #포트번호
+
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  #소켓 객체 생성
+        client_socket.connect((server_ip, server_port))    #연결
+        '''
+
+
         self.window = tk.Tk()
         self.window.title('자판기 관리 UI')
         self.window.geometry('500x500')
@@ -49,26 +62,45 @@ class Main():
 
         # 종료 버튼
         self.Exit_btn = tk.Button(self.window, text='종료', font=("맑은고딕", 12, 'bold'),
-                                  command=lambda: exit())
+                                  command=lambda: self.socket_close())
         self.Exit_btn.pack(ipadx=30, ipady=10, pady=30)
         self.Exit_btn.configure(image=btn_img, text='종료', width=30, height=10)
         self.Exit_btn.image = btn_img
         self.Exit_btn['compound'] = 'center'  # 그림위에 글씨 출력
 
+
+    #재고관리
     def Inventory(self):
         Inventory = Inventory_left_UI() #재고관리 UI 객체 생성
         Inventory.mainloop()
 
-    def Sale(selfs):
+    #거래내역
+    def Sale(self):
         Sale = Sale_UI()  #거래내역 UI 객체 생성
         Sale.mainloop()
 
+    #종료
     def exit(self):
         self.quit()
         self.destroy()
 
     def mainloop(self):
         self.window.mainloop()
+
+
+    def socket_close(self):
+        print('소켓 닫기')
+        self.window.destroy()
+        #self.client_socket_close()
+
+    def socket_rev(self):
+        while True :
+            data = self.client_socket.recv(1024)
+            print(repr(data.decode()))
+            data_list = repr(data.decode()).split(',')
+
+            if data_list[0] == '거래내역' :
+                self.action.repaint(data_list[1])
 
 
 app = Main()

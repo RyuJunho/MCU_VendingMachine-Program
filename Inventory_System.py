@@ -25,6 +25,9 @@ class Inventory_System():
 
     # CSV파일 내의 제품목록들 테이블에 출력
     def repaint(self, treeview):
+        self.ItemDB = Item_DB()  # Item_DB객체 생성
+        self.Item_df = self.ItemDB.get_df()
+
         # 기존 값 제거
         for item in treeview.get_children():
             treeview.delete(item)
@@ -44,7 +47,13 @@ class Inventory_System():
 
     #제품의 수량 변경
     def count_modify(self,name_label,count_entry):
+        self.ItemDB = Item_DB()  # Item_DB객체 생성
+        self.Item_df = self.ItemDB.get_df()
         self.Item_df.loc[name_label['text'],'ItemCount'] = count_entry.get()
         print(f'{count_entry.get()}으로 값 변경 완료')
         print(self.Item_df.loc[name_label['text'],'ItemCount'])
         #msg.showinfo('수량변경 완료', '수량변경이 완료되었습니다!')
+
+        #파일 저장
+        self.Item_df.to_csv("csv/Item.csv",index=False,encoding='cp949')
+
