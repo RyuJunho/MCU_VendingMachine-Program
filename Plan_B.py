@@ -30,13 +30,7 @@ class Main(tk.Tk):
         # 레이블('재고관리')
         self.label = tk.Label(left_label_frame, text='재고관리')
         self.label.grid(row=0, column=0, padx=50)
-
-        # 새로고침 버튼
-        self.repaint_btn = tk.Button(left_label_frame, text='새로고침'
-                                     , command=lambda: self.item_repaint(self.itemTable))
-        self.repaint_btn.grid(row=0, column=1, padx=50)
-
-        left_label_frame.pack(pady=20)
+        left_label_frame.pack(pady=10)
 
         # 테이블과 스크롤바를 부착할 프레임
         item_frame = tk.Frame(left_frame)
@@ -99,25 +93,9 @@ class Main(tk.Tk):
         self.label = tk.Label(right_label_frame, text='거래내역')
         self.label.grid(row=0, column=0, padx=50)
 
-        # 새로고침 버튼
-        self.repaint_btn = tk.Button(right_label_frame, text='새로고침'
-                                     , command=lambda: self.sale_repaint(self.Sale_Table))
-        self.repaint_btn.grid(row=0, column=1, padx=50)
-
         right_label_frame.pack()
 
-        right_sale_frame = tk.Frame(right_frame)
 
-        # 엔트리
-        self.sale_entry = tk.Entry(right_sale_frame, width=10, justify='right')
-        self.sale_entry.grid(row=0, column=0, padx=10)
-
-        # 구매 버튼
-        self.sale_btn = tk.Button(right_sale_frame, text='구매'
-                                  , command=lambda: self.sale(self.sale_entry.get()))
-        self.sale_btn.grid(row=0, column=1, padx=50)
-
-        right_sale_frame.pack(pady=10)
 
         # 테이블과 스크롤바를 부착할 프레임
         transaction_frame = tk.Frame(right_frame)
@@ -220,26 +198,6 @@ class Main(tk.Tk):
         self.Sale_Table.yview_moveto(1)  # 표 맨 밑으로 내림
 
 
-    def socket_rev(self):
-        while True:
-            self.ItemDB = Item_DB()  # Item_DB객체 생성
-            self.Item_df = self.ItemDB.get_df()
-
-            self.SaleDB = Sale_DB()  # Item_DB객체 생성
-            self.Sale_df = self.SaleDB.get_df()
-
-            data = self.client_socket.recv(1024)
-            print(repr(data.decode()))
-            data_list = repr(data.decode()).split(',')
-
-            if data_list[0] == '거래내역':
-                self.Item_df.loc[data_list[1], 'ItemCount'] -= 1  # 수량 1감소
-                self.item_repaint(self.itemTable)
-                self.sale_repaint(self.Sale_Table, data_list[1])
-
-            self.Item_df.to_csv("csv/Item.csv", index=False, encoding='cp949')
-            self.Sale_df.to_csv("csv/Sale.csv", index=False, encoding='cp949')
-
     def sale(self, item_name):
 
 
@@ -275,6 +233,7 @@ class Main(tk.Tk):
             length = int.from_bytes(data, "big")
             data = self.client_socket.recv(length)
             msg = data.decode()
+
             self.sale(msg)
 
 
